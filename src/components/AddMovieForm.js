@@ -5,9 +5,9 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { REG_TYPE, UseAxios } from "../hooks/useAxios";
 
-const EditMovieForm = (props) => {
+const AddMovieForm = (props) => {
   const history = useHistory();
-  const {id}=useParams();
+  //const {id}=useParams();
   const { setMovies } = props;
   //const [requestDo,movies,loading,error]=UseAxios([])
   const [movie, setMovie] = useState({
@@ -18,15 +18,6 @@ const EditMovieForm = (props) => {
     description: "",
   });
 
-  useEffect(()=>{
-     axios.get(`http://localhost:9000/api/movies/${id}`)
-     .then((res)=>{
-       setMovie(res.data);
-     }).catch((err)=>{
-       console.log(err);
-     })
-    //requestDo({reqType:REG_TYPE.GET,endPoint:`http://localhost:9000/api/movies/${id}`})
-  },[id])
   const handleChange = (e) => {
     setMovie({
       ...movie,
@@ -37,11 +28,10 @@ const EditMovieForm = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault();
       axios
-        .put(`http://localhost:9000/api/movies/${id}`, movie)
+        .post(`http://localhost:9000/api/movies`, movie)
         .then((res) => {
-          setMovies(res.data);
-          history.push(`/movies/${id}`);
-        
+          setMovies(res.data)
+          history.push("/")
         })
         .catch((err) => {
           console.log(err);
@@ -106,7 +96,7 @@ const EditMovieForm = (props) => {
         </div>
 
         <div className="px-5 py-4 border-t border-zinc-200 flex justify-end gap-2">
-          <Link to={`/movies/${id}`} className="myButton bg-zinc-500">
+          <Link to={`/movies`} className="myButton bg-zinc-500">
             Vazgeç
           </Link>
           <button
@@ -121,4 +111,4 @@ const EditMovieForm = (props) => {
   );
 };
 
-export default EditMovieForm;
+export default AddMovieForm;
