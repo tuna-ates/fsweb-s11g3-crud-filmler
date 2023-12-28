@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import React, { useEffect, useState } from "react";
 
 import { Route, Switch, Redirect } from "react-router-dom";
@@ -10,18 +11,23 @@ import FavoriteMovieList from './components/FavoriteMovieList';
 
 import axios from 'axios';
 
-const App = (props) => {
-  const [movies, setMovies] = useState([]);
-  const [favoriteMovies, setFavoriteMovies] = useState([]);
+import EditMovieForm from "./components/EditMovieForm";
+import { REG_TYPE, UseAxios } from "./hooks/useAxios";
 
+
+const App = (props) => {
+  //const [movies, setMovies] = useState([]);
+  const [favoriteMovies, setFavoriteMovies] = useState([]);
+  const[requestDo,movies,loading,error]=UseAxios([])
   useEffect(() => {
-    axios.get('http://localhost:9000/api/movies')
-      .then(res => {
-        setMovies(res.data);
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    // axios.get('http://localhost:9000/api/movies')
+    //   .then(res => {
+    //     setMovies(res.data);
+    //   })
+    //   .catch(err => {
+    //     console.log(err);
+    //   });
+    requestDo({reqType:REG_TYPE.GET,endPoint:"http://localhost:9000/api/movies"})
   }, []);
 
   const deleteMovie = (id) => {
@@ -44,6 +50,7 @@ const App = (props) => {
 
           <Switch>
             <Route path="/movies/edit/:id">
+            <EditMovieForm movies={movies} setFavoriteMovies={setFavoriteMovies}  />
             </Route>
 
             <Route path="/movies/:id">
@@ -57,6 +64,7 @@ const App = (props) => {
             <Route path="/">
               <Redirect to="/movies" />
             </Route>
+            
           </Switch>
         </div>
       </div>

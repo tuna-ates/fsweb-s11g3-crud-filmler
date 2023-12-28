@@ -3,11 +3,13 @@ import { useParams, useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 import axios from "axios";
+import { UseAxios } from "../hooks/useAxios";
 
 const EditMovieForm = (props) => {
   const { push } = useHistory();
-
+  const {id}=useParams();
   const { setMovies } = props;
+  
   const [movie, setMovie] = useState({
     title: "",
     director: "",
@@ -28,8 +30,10 @@ const EditMovieForm = (props) => {
     axios
       .put(`http://localhost:9000/api/movies/${id}`, movie)
       .then((res) => {
+        setMovie(res.data)
         setMovies(res.data);
         push(`/movies/${movie.id}`);
+        
       })
       .catch((err) => {
         console.log(err);
